@@ -1,7 +1,0 @@
-graph TD
-    U[Usuario] --> |Acción| A[Confirmar Acción]
-    A --> |Mostrar| D[Diálogo de Confirmación]
-    D --> |Confirmar| P[Procesar Acción]
-    D --> |Cancelar| C[Cancelar Acción]
-    P --> |Resultado| U
-    C --> |Volver| U

@@ -1,8 +1,0 @@
-flowchart LR
-    U[Usuario] --> |Datos de Entrada| P1[Proceso 1]
-    P1 --> |Datos Procesados| D1[(Base de Datos)]
-    D1 --> |Datos Recuperados| P2[Proceso 2]
-    P2 --> |Resultados| U
-    P1 --> |Información| P3[Proceso 3]
-    P3 --> |Datos Formateados| U
-    E[Entidad Externa] --> |Datos Externos| P2

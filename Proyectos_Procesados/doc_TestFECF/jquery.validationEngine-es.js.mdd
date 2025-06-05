@@ -1,7 +1,0 @@
-graph TD
-    U[Usuario] --> |Datos de entrada| V[Validación]
-    V --> |Reglas de validación| R[Reglas]
-    R --> |Resultados de validación| V
-    V --> |Mensajes de alerta| U
-    V --> |Datos validados| P[Procesamiento]
-    P --> |Respuesta| U

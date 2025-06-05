@@ -1,8 +1,0 @@
-graph TD
-    Usuario[Usuario] --> |Interactúa con| Árbol[Árbol de Casillas de Verificación]
-    Árbol --> |Envía eventos de| Controlador[Controlador de Árbol]
-    Controlador --> |Procesa| Verificación[Verificación de Casillas]
-    Controlador --> |Procesa| Expansión[Expansión/Colapso de Nodos]
-    Verificación --> |Actualiza| Árbol
-    Expansión --> |Actualiza| Árbol
-    Configuración[Configuración] --> |Define comportamiento de| Controlador

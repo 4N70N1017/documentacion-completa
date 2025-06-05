@@ -1,9 +1,0 @@
-flowchart TD
-    A[Usuario] -->|Solicita hash| B[Hash.php]
-    B -->|Inicializa hash| C[hash_init]
-    B -->|Actualiza hash| D[hash_update]
-    B -->|Finaliza hash| E[hash_final]
-    C -->|Devuelve objeto hash| B
-    D -->|Actualiza objeto hash| B
-    E -->|Devuelve hash final| B
-    B -->|Devuelve hash| A

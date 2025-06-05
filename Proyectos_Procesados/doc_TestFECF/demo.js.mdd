@@ -1,6 +1,0 @@
-graph TD
-    U[Usuario] --> |Entrada de datos| P1[Procesar Datos]
-    P1 --> |Datos procesados| D1[(Base de Datos)]
-    D1 --> |Recuperar datos| P2[Generar Informe]
-    P2 --> |Informe| U
-    U --> |Solicitud de informe| P2

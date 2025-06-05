@@ -1,9 +1,0 @@
-graph TD
-    Usuario[Usuario] --> |Solicita información| Sistema
-    Sistema[Sistema] --> |Proporciona resultados| Usuario
-    Sistema --> |Almacena datos| BaseDeDatos[(Base de Datos)]
-    BaseDeDatos --> |Recupera datos| Sistema
-    Sistema --> |Procesa solicitud| ProcesamientoDeDatos[Procesamiento de Datos]
-    ProcesamientoDeDatos --> |Devuelve resultados procesados| Sistema
-    Sistema --> |Envía notificaciones| Usuario
-    Usuario --> |Actualiza información| Sistema

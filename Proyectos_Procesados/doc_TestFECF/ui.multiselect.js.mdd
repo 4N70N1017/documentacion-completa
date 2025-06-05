@@ -1,9 +1,0 @@
-flowchart TD
-    Usuario[Usuario] --> |Interactúa| UI[Interfaz de Usuario]
-    UI --> |Muestra opciones| Usuario
-    UI --> |Envía selecciones| Multiselect[Widget Multiselect]
-    Multiselect --> |Actualiza vista| UI
-    Multiselect --> |Guarda selecciones| Datos[Almacenamiento de Datos]
-    Datos --> |Recupera selecciones| Multiselect
-    Multiselect --> |Valida opciones| Validador[Validador de Opciones]
-    Validador --> |Resultado validación| Multiselect

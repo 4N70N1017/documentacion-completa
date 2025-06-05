@@ -1,6 +1,0 @@
-flowchart LR
-    Usuario[Usuario] --> |Selecciona archivo| Interfaz
-    Interfaz[Interfaz de Usuario] --> |Muestra retroalimentación| Usuario
-    Interfaz --> |Envía archivo| ProcesadorArchivo
-    ProcesadorArchivo[Procesador de Archivo] --> |Devuelve nombre de archivo| Interfaz
-    ProcesadorArchivo --> |Almacena archivo| AlmacenamientoArchivos[Almacenamiento de Archivos]

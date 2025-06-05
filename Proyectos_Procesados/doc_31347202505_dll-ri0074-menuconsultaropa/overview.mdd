@@ -1,8 +1,0 @@
-flowchart TD
-    User[User] --> |Request| MessageBox
-    MessageBox[AfxMessageBox] --> |Display| User
-    MessageBox --> |Call| WindowsAPI[Windows API MessageBox]
-    MessageBox --> |Get Active Window| GetActiveWindow[GetActiveWindow]
-    GetActiveWindow --> |Return Window Handle| MessageBox
-    WindowsAPI --> |Show Dialog| User
-

@@ -1,6 +1,0 @@
-flowchart TD
-    Usuario[Usuario] --> |Datos de Entrada| Validación[Validación de Formulario]
-    Validación --> |Datos Validados| Procesamiento[Procesamiento de Datos]
-    Procesamiento --> |Resultados| BaseDatos[(Base de Datos)]
-    BaseDatos --> |Datos Recuperados| Procesamiento
-    Procesamiento --> |Respuesta| Usuario

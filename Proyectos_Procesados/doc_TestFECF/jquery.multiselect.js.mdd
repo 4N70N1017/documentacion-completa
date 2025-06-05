@@ -1,9 +1,0 @@
-flowchart TD
-    Usuario[Usuario] --> |Interactúa| Multiselect[Widget Multiselect]
-    Multiselect --> |Muestra opciones| Usuario
-    Multiselect --> |Guarda selección| ElementoSelect[Elemento Select Original]
-    ElementoSelect --> |Proporciona opciones| Multiselect
-    Multiselect --> |Actualiza| InterfazUsuario[Interfaz de Usuario]
-    InterfazUsuario --> |Muestra estado| Usuario
-    Multiselect --> |Envía eventos| ManejadorEventos[Manejador de Eventos]
-    ManejadorEventos --> |Procesa acciones| Multiselect

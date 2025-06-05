@@ -1,7 +1,0 @@
-flowchart TD
-    Usuario[Usuario] --> |Proporciona credenciales| A[Proceso de Login]
-    A --> |Consulta datos| B[Servicio SOAP]
-    B --> |Devuelve respuesta| A
-    A --> |Retorna resultado| Usuario
-    
-    B <--> |Intercambio de datos| C[(Base de Datos)]

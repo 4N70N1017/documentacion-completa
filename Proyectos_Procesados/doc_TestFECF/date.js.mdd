@@ -1,9 +1,0 @@
-flowchart LR
-    Usuario[Usuario] --> |Solicita fecha| ProcesarFecha
-    ProcesarFecha[Procesar Fecha] --> |Consulta información cultural| AlmacenCultura[(Información Cultural)]
-    AlmacenCultura --> |Devuelve datos culturales| ProcesarFecha
-    ProcesarFecha --> |Solicita validación| ValidarFecha[Validar Fecha]
-    ValidarFecha --> |Resultado validación| ProcesarFecha
-    ProcesarFecha --> |Solicita formato| FormatearFecha[Formatear Fecha]
-    FormatearFecha --> |Fecha formateada| ProcesarFecha
-    ProcesarFecha --> |Fecha procesada| Usuario

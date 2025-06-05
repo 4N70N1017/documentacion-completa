@@ -1,6 +1,0 @@
-graph TD
-    U[Usuario] --> |Selecciona opciones| P[Proceso de Multiselección]
-    P --> |Muestra opciones seleccionadas| U
-    P --> |Guarda selecciones| D[(Base de Datos)]
-    D --> |Recupera configuración| P
-    E[Eventos UI] --> |Marca/Desmarca todas| P

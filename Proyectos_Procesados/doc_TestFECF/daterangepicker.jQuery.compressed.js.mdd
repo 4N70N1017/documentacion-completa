@@ -1,7 +1,0 @@
-flowchart TD
-    Usuario[Usuario] --> |Selecciona rango de fechas| DateRangePicker
-    DateRangePicker --> |Muestra calendario| Usuario
-    DateRangePicker --> |Procesa selección| ProcesadorFechas
-    ProcesadorFechas --> |Formatea fechas| DateRangePicker
-    DateRangePicker --> |Devuelve rango seleccionado| Usuario
-    ConfiguracionInicial[Configuración Inicial] --> DateRangePicker
