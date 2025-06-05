@@ -1,0 +1,19 @@
+# Diagrama de Sistema Integrado
+
+```mermaid
+graph TD
+    Usuario[Usuario] --> ActualizarDatos[Actualizar Datos]
+    ActualizarDatos --> DB[(Base de Datos)]
+    DB --> ActualizarBeneficiarios[Actualizar Beneficiarios]
+    ActualizarBeneficiarios --> DB
+    DB --> ActualizarCamposNulos[Actualizar Campos Nulos]
+    ActualizarCamposNulos --> DB
+    DB --> InsertarRecibos[Insertar Recibos]
+    InsertarRecibos --> DB
+    DB --> ActualizarFechaCorte[Actualizar Fecha de Corte]
+    ActualizarFechaCorte --> DB
+    DB --> GenerarReporte[Generar Reporte]
+    GenerarReporte --> Usuario
+```
+
+Este diagrama muestra una visión general del sistema donde el Usuario interactúa con varios procesos que manipulan la Base de Datos y finalmente generan un reporte que se devuelve al Usuario.

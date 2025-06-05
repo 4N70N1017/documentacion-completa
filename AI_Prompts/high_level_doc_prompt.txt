@@ -1,0 +1,28 @@
+Based on the provided code module, generate a comprehensive analysis as follows:
+
+
+
+- **Module/SQL Component Name**:
+  Identify the module, script, or SQL component (e.g., stored procedure, view, trigger, etc.).
+- **Primary Objectives**:
+  Define the overall purpose of the code, whether it performs specific logic operations or handles data management through SQL queries and transformations.
+- **Critical Functions, Methods, and Queries**:
+  List the main functions, methods, or queries. For SQL, specify which queries (SELECT, INSERT, UPDATE, DELETE), stored procedures, or triggers are essential, and briefly explain their roles.
+- **Key Variables and Elements (Columns, Tables, Parameters)**:
+  Highlight important variables in programming code or, in the case of SQL, identify critical columns, tables, indexes, and parameters that are central to the operations.
+- **Interdependencies and Relationships**:
+  Note any interactions with other system components or, for SQL, the relationships among various tables (e.g., foreign keys, joins) and how they interact.
+- **Core vs. Auxiliary Operations**:
+  Differentiate between the critical operations (the core processing or primary query) and auxiliary operations (such as validations, logging, or secondary tasks).
+- **Operational Sequence/Flow of Execution**:
+  Describe the execution sequence or flow of the code or SQL query, detailing specific steps, the order of operations, or processing phases.
+- **Performance Aspects and Optimization**:
+  Mention performance considerations, such as potential bottlenecks and areas for optimization (e.g., index usage in SQL, efficient loops or calculations in programming code).
+- **Reusability and Adaptability**:
+  Discuss the ease of reusing or modifying the code or queries in different contexts or projects, highlighting aspects of modularity and parameterization.
+- **Usage and Context**:
+  Explain how the module is used or how the queries are applied within the system, describing the scenarios in which they are deployed and any external dependencies if applicable.
+- **Assumptions and Limitations**:
+  List any assumptions made during development (e.g., existing database structures, expected data formats, execution environment) along with any potential limitations.
+
+Send the output in spanish.

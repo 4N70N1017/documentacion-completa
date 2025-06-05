@@ -1,0 +1,7 @@
+flowchart LR
+    Usuario[Usuario] --> |Interactúa con| Interfaz
+    Interfaz[Interfaz de Usuario] --> |Envía eventos| Controlador
+    Controlador[Controlador] --> |Procesa datos| Modelo
+    Modelo[Modelo de Datos] --> |Devuelve resultados| Controlador
+    Controlador --> |Actualiza| Interfaz
+    BD[(Base de Datos)] <--> |Almacena/Recupera| Modelo

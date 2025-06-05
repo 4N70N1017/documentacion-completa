@@ -1,0 +1,10 @@
+flowchart TD
+    A[Usuario] -->|Solicitud| B[Procesamiento de Petición]
+    B -->|Obtener Módulo| C[Validación de Módulo]
+    C -->|Módulo Válido| D[Carga de Controlador]
+    C -->|Módulo No Válido| E[Error de Módulo]
+    D -->|Controlador Encontrado| F[Ejecución de Método]
+    D -->|Controlador No Encontrado| G[Error de Vista]
+    F -->|Respuesta| A
+    E -->|Mensaje de Error| A
+    G -->|Mensaje de Error| A

@@ -1,0 +1,14 @@
+graph TD
+    Usuario[Usuario] --> |Entrada de datos| ValidarEntrada[Validar Entrada]
+    ValidarEntrada --> |Datos validados| ProcesarDatos[Procesar Datos]
+    ProcesarDatos --> |Datos procesados| MostrarResultado[Mostrar Resultado]
+    MostrarResultado --> |Resultado| Usuario
+    
+    ValidarEntrada --> |Configuración| AlmacenConfig[Almacén de Configuración]
+    AlmacenConfig --> |Parámetros| ValidarEntrada
+    
+    ValidarEntrada --> |Eventos de teclado| GestionEventos[Gestión de Eventos]
+    GestionEventos --> |Respuesta de eventos| ValidarEntrada
+    
+    ProcesarDatos --> |Formato de números| FormatearNumeros[Formatear Números]
+    FormatearNumeros --> |Números formateados| ProcesarDatos

@@ -1,0 +1,7 @@
+flowchart TD
+    Usuario[Usuario] --> |Datos de entrada| Proceso1[Proceso 1: Validar datos]
+    Proceso1 --> |Datos validados| Proceso2[Proceso 2: Procesar información]
+    Proceso2 --> |Solicitud de datos| BD[(Base de datos)]
+    BD --> |Datos recuperados| Proceso2
+    Proceso2 --> |Resultados procesados| Proceso3[Proceso 3: Generar informe]
+    Proceso3 --> |Informe final| Usuario

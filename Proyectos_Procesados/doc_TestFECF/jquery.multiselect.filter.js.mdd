@@ -1,0 +1,11 @@
+graph TD
+    Usuario[Usuario] --> |Ingresa palabras clave| Filtro[Filtro de Búsqueda]
+    Filtro --> |Actualiza| ListaOpciones[Lista de Opciones]
+    ListaOpciones --> |Muestra| Usuario
+    
+    BD[Base de Datos de Opciones] --> |Proporciona datos| ListaOpciones
+    Filtro --> |Consulta| BD
+    
+    Usuario --> |Selecciona opciones| Seleccion[Proceso de Selección]
+    Seleccion --> |Actualiza| ListaOpciones
+    Seleccion --> |Guarda cambios| BD

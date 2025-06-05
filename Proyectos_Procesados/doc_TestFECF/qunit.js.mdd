@@ -1,0 +1,11 @@
+flowchart TD
+    Usuario[Usuario] --> |Solicita pruebas| QUnit[QUnit]
+    QUnit --> |Configura entorno| Config[Configuración]
+    QUnit --> |Ejecuta pruebas| Test[Prueba]
+    Test --> |Realiza aserciones| Assert[Aserciones]
+    Assert --> |Reporta resultados| QUnit
+    QUnit --> |Muestra resultados| Usuario
+    Config --> |Proporciona parámetros| Test
+    Test --> |Registra eventos| Logger[Registro]
+    Logger --> |Actualiza interfaz| UI[Interfaz de Usuario]
+    UI --> |Presenta información| Usuario

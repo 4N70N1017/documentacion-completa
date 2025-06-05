@@ -1,0 +1,12 @@
+flowchart TD
+    Usuario[Usuario] --> |Entrada de texto| InputMask[Entrada Enmascarada]
+    InputMask --> |Aplicar máscara| Procesamiento[Procesamiento de Máscara]
+    Procesamiento --> |Validar caracteres| Validacion[Validación de Entrada]
+    Validacion --> |Formatear texto| FormateoTexto[Formateo de Texto]
+    FormateoTexto --> |Mostrar resultado| Usuario
+    
+    Definiciones[Definiciones de Máscara] --> Procesamiento
+    Configuracion[Configuración] --> Procesamiento
+    
+    Procesamiento --> |Eventos de teclado| ManejadorEventos[Manejador de Eventos]
+    ManejadorEventos --> Procesamiento

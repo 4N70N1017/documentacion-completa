@@ -1,0 +1,19 @@
+graph TD
+    Usuario[Usuario] --> |Entrada de datos| InputField[Campo de entrada]
+    InputField --> |Eventos de teclado| MaskMoney[maskMoney]
+    
+    MaskMoney --> |Formateo| FormatValue[Formatear valor]
+    MaskMoney --> |Validación| ValidateInput[Validar entrada]
+    
+    FormatValue --> |Aplicar máscara| MaskedValue[Valor con máscara]
+    ValidateInput --> |Permitir/rechazar teclas| InputField
+    
+    MaskedValue --> |Mostrar resultado| InputField
+    
+    InputField --> |Valor formateado| Usuario
+    
+    subgraph Procesamiento
+        MaskMoney
+        FormatValue
+        ValidateInput
+    end

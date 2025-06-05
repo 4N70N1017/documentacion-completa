@@ -1,0 +1,7 @@
+graph TD
+    Usuario[Usuario] --> |Entrada de datos| Proceso1[Proceso de Combobox]
+    Proceso1 --> |Mostrar opciones| Usuario
+    Proceso1 --> |Guardar selección| BaseDatos[(Base de Datos)]
+    BaseDatos --> |Cargar opciones| Proceso1
+    Proceso1 --> |Validar entrada| Proceso2[Validación de Datos]
+    Proceso2 --> |Resultado validación| Proceso1

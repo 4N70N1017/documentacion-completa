@@ -1,0 +1,7 @@
+flowchart TD
+    Usuario[Usuario] --> |Selecciona tema| GestorTemas[Gestor de Temas]
+    GestorTemas --> |Aplica tema seleccionado| InterfazUsuario[Interfaz de Usuario]
+    InterfazUsuario --> |Muestra vista previa| Usuario
+    GestorTemas --> |Guarda preferencia| AlmacenamientoCookies[Almacenamiento de Cookies]
+    AlmacenamientoCookies --> |Recupera tema guardado| GestorTemas
+    DefinicionesTemas[Definiciones de Temas] --> |Proporciona opciones de temas| GestorTemas

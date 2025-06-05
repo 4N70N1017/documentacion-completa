@@ -1,0 +1,9 @@
+flowchart TD
+    Usuario[Usuario] --> |Solicita flip| Flip[Proceso de Flip]
+    Flip --> |Devuelve elemento animado| Usuario
+    Flip --> |Guarda configuración| ConfiguracionFlip[Almacén de Configuración]
+    ConfiguracionFlip --> |Recupera configuración| Flip
+    Flip --> |Solicita manipulación DOM| jQuery[Manipulación DOM]
+    jQuery --> |Devuelve elementos manipulados| Flip
+    Flip --> |Solicita animación| AnimacionCSS[Animación CSS]
+    AnimacionCSS --> |Devuelve animación completada| Flip

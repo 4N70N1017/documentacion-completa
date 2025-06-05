@@ -1,0 +1,6 @@
+graph TD
+    U[Usuario] --> |Interactúa| T[Toggle]
+    T --> |Actualiza| E[Elemento DOM]
+    T --> |Cambia| V[Visualización]
+    E --> |Notifica| T
+    V --> |Muestra| U

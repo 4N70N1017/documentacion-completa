@@ -1,0 +1,9 @@
+flowchart TD
+    U[Usuario] --> |Datos de entrada| P1[Proceso 1]
+    P1 --> |Datos procesados| P2[Proceso 2]
+    P1 --> |Datos para almacenar| D1[(Base de Datos)]
+    D1 --> |Datos recuperados| P2
+    P2 --> |Resultado| U
+    P2 --> |Registro de actividad| D2[(Registro)]
+    E[Entidad Externa] --> |Información externa| P1
+    P2 --> |Reporte| E

@@ -1,0 +1,7 @@
+flowchart TD
+    Usuario[Usuario] --> |Selecciona tema| Aplicacion
+    Aplicacion[Aplicación jQuery] --> |Muestra temas disponibles| Usuario
+    Aplicacion --> |Guarda preferencia| Cookies[Almacenamiento de Cookies]
+    Cookies --> |Recupera tema guardado| Aplicacion
+    Aplicacion --> |Aplica tema CSS| Interfaz[Interfaz de Usuario]
+    Interfaz --> |Muestra vista con tema aplicado| Usuario

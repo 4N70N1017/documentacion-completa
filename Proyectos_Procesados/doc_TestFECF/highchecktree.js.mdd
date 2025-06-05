@@ -1,0 +1,10 @@
+graph TD
+    Usuario[Usuario] --> |Interactúa con| Árbol[Árbol de Verificación]
+    Árbol --> |Inicializa| Datos[Datos de Entrada]
+    Datos --> |Procesa| Nodos[Nodos del Árbol]
+    Nodos --> |Muestra| Interfaz[Interfaz de Usuario]
+    Interfaz --> |Eventos| Controlador[Controlador de Eventos]
+    Controlador --> |Actualiza| Nodos
+    Controlador --> |Notifica| Usuario
+    Nodos --> |Almacena Estado| Memoria[Memoria de Datos]
+    Memoria --> |Recupera| Nodos

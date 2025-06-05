@@ -1,0 +1,7 @@
+flowchart TD
+    Usuario[Usuario] --> |Selecciona tema| ThemeSwitcher
+    ThemeSwitcher --> |Muestra opciones| Usuario
+    ThemeSwitcher --> |Actualiza CSS| Navegador
+    ThemeSwitcher --> |Guarda preferencia| Cookie
+    Cookie --> |Recupera tema guardado| ThemeSwitcher
+    Navegador --> |Aplica tema| Usuario

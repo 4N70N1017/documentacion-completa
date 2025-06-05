@@ -1,0 +1,12 @@
+flowchart TD
+    Usuario[Usuario] --> |Solicita acceso| A[Sistema de Facturación Electrónica]
+    A --> |Consulta datos| B[Base de Datos]
+    B --> |Devuelve información| A
+    A --> |Valida identidad| C[Servicio de Autenticación]
+    C --> |Confirma identidad| A
+    A --> |Genera factura| D[Servicio de Facturación CFDI]
+    D --> |Devuelve CFDI| A
+    A --> |Consulta catálogos| E[Servicio de Catálogos]
+    E --> |Devuelve información| A
+    A --> |Imprime documentos| F[Servicio de Impresión]
+    A --> |Muestra información| Usuario

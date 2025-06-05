@@ -1,0 +1,9 @@
+flowchart TD
+    Usuario[Usuario] --> |Solicitud| Navegador
+    Navegador[Navegador] --> |Petición| jQuery
+    jQuery[jQuery] --> |Manipulación DOM| Documento
+    jQuery --> |Solicitud AJAX| Servidor
+    Servidor[Servidor] --> |Respuesta| jQuery
+    jQuery --> |Actualización| Navegador
+    Documento[Documento] --> |Renderizado| Navegador
+    Navegador --> |Visualización| Usuario

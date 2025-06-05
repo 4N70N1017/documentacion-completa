@@ -1,0 +1,21 @@
+# Diagrama de Mermaid Unificado en Español
+
+```mermaid
+flowchart TD
+    Usuario[Usuario] --> ProcesarDevoluciones
+    BaseDatos[(Base de Datos)] --> ProcesarDevoluciones
+    ProcesarDevoluciones --> BaseDatos
+    ProcesarDevoluciones --> ReporteDevoluciones[Reporte de Devoluciones]
+    
+    subgraph ProcesarDevoluciones[Procesar Devoluciones de Muebles]
+        ObtenerDatos[Obtener datos de devoluciones] --> ValidarDevoluciones
+        ValidarDevoluciones[Validar devoluciones] --> ProcesarCartera
+        ProcesarCartera[Procesar cartera de muebles] --> ActualizarSaldos
+        ActualizarSaldos[Actualizar saldos] --> ActualizarHojasMensuales
+        ActualizarHojasMensuales[Actualizar hojas mensuales] --> ActualizarCMV
+        ActualizarCMV[Actualizar CMV por cliente] --> ActualizarCredito
+        ActualizarCredito[Actualizar información de crédito] --> GenerarCifrasControl
+        GenerarCifrasControl[Generar cifras de control] --> ProcesarTarjetasContenido
+        ProcesarTarjetasContenido[Procesar tarjetas de contenido]
+    end
+```
