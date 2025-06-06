@@ -1,36 +1,13 @@
-Analiza el siguiente módulo de código (puede ser un script, función, procedimiento almacenado, vista, trigger, etc.) y genera una documentación técnica detallada siguiendo este esquema. La respuesta debe estar en español, clara y estructurada en secciones numeradas o con títulos en negrita:
+Based on the provided code module, generate a comprehensive analysis as follows:
 
-1. **Nombre del módulo o componente SQL:**  
-   Indica el nombre del archivo, módulo, script o componente relevante.
-
-2. **Objetivos principales:**  
-   Explica el propósito general del código: ¿qué problema resuelve? ¿Qué función cumple dentro del sistema?
-
-3. **Funciones, métodos o consultas críticas:**  
-   Enumera las funciones, métodos o consultas principales (por ejemplo: SELECT, INSERT, UPDATE, DELETE, procedimientos almacenados, triggers) y explica brevemente su papel.
-
-4. **Variables y elementos clave (columnas, tablas, parámetros):**  
-   Destaca las variables más importantes, o en SQL, las columnas, tablas, índices o parámetros críticos para la operación.
-
-5. **Interdependencias y relaciones:**  
-   Describe las interacciones con otros componentes del sistema, o en SQL, las relaciones y dependencias entre tablas (claves foráneas, joins, etc.).
-
-6. **Operaciones centrales vs. auxiliares:**  
-   Diferencia las operaciones esenciales (procesamiento principal) de las auxiliares (validaciones, logs, tareas secundarias).
-
-7. **Secuencia operativa o flujo de ejecución:**  
-   Explica el orden de ejecución o fases principales del procesamiento.
-
-8. **Aspectos de rendimiento y optimización:**  
-   Menciona consideraciones de rendimiento y oportunidades de optimización (uso de índices, eficiencia de bucles, etc.).
-
-9. **Reusabilidad y adaptabilidad:**  
-   Describe qué tan fácil es reutilizar o adaptar el código en otros contextos, señalando si es modular y/o parametrizable.
-
-10. **Uso y contexto:**  
-    Explica cómo y dónde se utiliza este módulo dentro del sistema, y si tiene dependencias externas.
-
-11. **Supuestos y limitaciones:**  
-    Enumera los supuestos realizados (estructuras de datos, formatos esperados, entorno de ejecución) y posibles limitaciones.
-
-Responde solo con el análisis estructurado en español, sin agregar explicaciones adicionales fuera de las secciones solicitadas.
+- **Module Name**: Identify the module.
+- **Primary Objectives**: Define its purpose.
+- **Critical Functions**: List main methods/functions and their roles.
+- **Key Variables**: Point out essential variables.
+- **Interdependencies**: Note interactions with other system components.
+- **Core vs. Auxiliary Operations**: Differentiate main operations from auxiliary ones.
+- **Operational Sequence**: Describe any distinct flow.
+- **Performance Aspects**: Mention performance considerations.
+- **Reusability**: Talk about adaptability for reuse.
+- **Usage**: Discuss how it is used.
+- **Assumptions**: List any assumptions made.
