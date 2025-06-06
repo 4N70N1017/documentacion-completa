@@ -1,0 +1,19 @@
+{
+  "name": "create_overview_doc",
+  "version": "1.0.0",
+  "description": "This powerful tool streamlines the creation of high-level documentation for software project directories. It analyzes code modules, generates visual flow maps, and compiles comprehensive documentation, all while keeping track of usage metrics.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/4N70N1017/documentacion-completa.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/4N70N1017/documentacion-completa/issues"
+  },
+  "homepage": "https://github.com/4N70N1017/documentacion-completa#readme"
+}

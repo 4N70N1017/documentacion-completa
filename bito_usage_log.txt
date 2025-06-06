@@ -118,3 +118,69 @@ Total Input Tokens = 1196
 Total Output Tokens = 1190
 Session Duration: 0h 31m 9s
 -----------------------------------------
+-----------------------------------------
+2025-06-05 12:59:45 - Total Token Usage for Session
+Total Input Tokens = 0
+Total Output Tokens = 0
+Session Duration: 0h 0m 52s
+-----------------------------------------
+-----------------------------------------
+2025-06-05 13:23:07 - Total Token Usage for Session
+Total Input Tokens = 1210
+Total Output Tokens = 1204
+Session Duration: 0h 31m 18s
+-----------------------------------------
+-----------------------------------------
+2025-06-05 13:32:30 - Total Token Usage for Session
+Total Input Tokens = 504
+Total Output Tokens = 504
+Session Duration: 0h 11m 25s
+-----------------------------------------
+-----------------------------------------
+2025-06-05 16:03:49 - Total Token Usage for Session
+Total Input Tokens = 0
+Total Output Tokens = 0
+Session Duration: 0h 0m 51s
+-----------------------------------------
+-----------------------------------------
+2025-06-05 17:44:05 - Total Token Usage for Session
+Total Input Tokens = 0
+Total Output Tokens = 0
+Session Duration: 0h 0m 52s
+-----------------------------------------
+-----------------------------------------
+2025-06-06 09:47:14 - Total Token Usage for Session
+Total Input Tokens = 0
+Total Output Tokens = 0
+Session Duration: 0h 2m 39s
+-----------------------------------------
+-----------------------------------------
+2025-06-06 09:49:50 - Total Token Usage for Session
+Total Input Tokens = 0
+Total Output Tokens = 0
+Session Duration: 0h 1m 59s
+-----------------------------------------
+-----------------------------------------
+2025-06-06 11:02:17 - Total Token Usage for Session
+Total Input Tokens = 70
+Total Output Tokens = 70
+Session Duration: 0h 2m 35s
+-----------------------------------------
+-----------------------------------------
+2025-06-06 11:16:39 - Total Token Usage for Session
+Total Input Tokens = 14
+Total Output Tokens = 14
+Session Duration: 0h 2m 42s
+-----------------------------------------
+-----------------------------------------
+2025-06-06 12:08:22 - Total Token Usage for Session
+Total Input Tokens = 57
+Total Output Tokens = 79
+Session Duration: 0h 1m 27s
+-----------------------------------------
+-----------------------------------------
+2025-06-06 12:23:09 - Total Token Usage for Session
+Total Input Tokens = 1972
+Total Output Tokens = 3199
+Session Duration: 0h 13m 0s
+-----------------------------------------

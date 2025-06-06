@@ -443,30 +443,22 @@ function update_progress_time_log() {
     local char_count="${5:-N/A}"
     local file_time="${6:-N/A}"
 
-    local percent=0
-    if [[ $total -gt 0 ]]; then
-        percent=$(( 100 * processed / total ))
-    fi
+    # Tiempos de inicio y fin por archivo
+    local file_end_time=$(date +%s)
+    local file_start_time=$((file_end_time - file_time))
+    local file_start_fmt=$(date -d "@$file_start_time" '+%d/%m/%Y:%H:%M:%S')
+    local file_end_fmt=$(date -d "@$file_end_time" '+%d/%m/%Y:%H:%M:%S')
 
-    local now=$(date +%s)
-    local elapsed=$(( now - start_time ))
-    local elapsed_fmt=$(printf "%02d:%02d:%02d" $((elapsed/3600)) $(( (elapsed%3600)/60 )) $((elapsed%60)) )
+    # Tiempo total fin
+    local total_end_fmt=$(date '+%d/%m/%Y:%H:%M:%S')
 
-    local file_time_fmt="N/A"
-    if [[ "$file_time" != "N/A" && "$file_time" =~ ^[0-9]+$ ]]; then
-        file_time_fmt=$(printf "%02d:%02d:%02d" $((file_time/3600)) $(( (file_time%3600)/60 )) $((file_time%60)) )
-    fi
-
-    # Solo imprime si el avance es 100%
-    if [[ $percent -eq 100 ]]; then
-        echo "Avance: $percent% ($processed/$total) | Archivo: $file_name | Caracteres: $char_count | Tiempo archivo: $file_time_fmt | Tiempo total: $elapsed_fmt" >> "$progress_time_log"
-    fi
+    echo "Archivo: $file_name | Caracteres: $char_count | Tiempo inicio archivo: $file_start_fmt | Tiempo fin archivo: $file_end_fmt | Tiempo total fin: $total_end_fmt" >> "$progress_time_log"
 }
 
 # MAX_JOBS: Número de procesos paralelos permitidos
 MAX_JOBS=5
 
-# Función para crear documentación de módulos en paralelo
+# Función para crear documentación de módulos en paralelo (ajustada para esperar a que terminen todos los procesos)
 function parallel_create_module_documentation() {
     local files=("$@")
     local total_files=${#files[@]}
@@ -487,10 +479,14 @@ function parallel_create_module_documentation() {
                 update_progress_time_log "$processed_now" "$total_files" "$start_time" "$file_name" "$char_count" "$file_time"
             ) 200>"$progress_lock"
         ) &
+        # Controla el número máximo de procesos en paralelo
         while [[ $(jobs -rp | wc -l) -ge $MAX_JOBS ]]; do
             sleep 0.5
         done
     done
+
+    # Espera a que TODOS los procesos en paralelo terminen antes de continuar
+    wait
 
     echo "Log de progreso y tiempo guardado en: $progress_time_log"
 }
