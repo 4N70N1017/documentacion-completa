@@ -1,4 +1,7 @@
 #!/bin/bash
+if [ -f .env ]; then
+    export $(grep -v '^#' .env | xargs)
+fi
 #set -x
 
 # Setting some required variables
@@ -136,7 +139,7 @@ function call_bito_with_retry() {
     local filename=$(basename "$prompt_file_path")
     while [ $attempt -le $MAX_RETRIES ]; do
         echo "Calling bito with retry logic. Attempt $attempt of $MAX_RETRIES with prompt file '$filename'..." >&2
-        output=$(echo -e "$input_text" | bito $BITO_CMD_VEP -k "eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjoidjFfMjU4NzlfOTM4ODk5XzUxNjg4NV9XZWQgQXByIDIzIDA1OjU0OjI0IFVUQyAyMDI1In0.hYe6J9Y2Hhqt27mDD1KDPWLVd999DunaZBViZPXH21U" -p "$prompt_file_path")
+        output=$(echo -e "$input_text" | bito $BITO_CMD_VEP -k "$BITO_API_KEY" -p "$prompt_file_path")
         local ret_code=$?
         if ! bito_response_ok "$ret_code" "$output"; then
             echo "Attempt $attempt: bito call for file '$filename' completed but returned insufficient content. Retrying in $RETRY_DELAY seconds..." >&2

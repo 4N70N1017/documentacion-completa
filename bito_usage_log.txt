@@ -196,3 +196,15 @@ Total Input Tokens = 44
 Total Output Tokens = 159
 Session Duration: 0h 2m 4s
 -----------------------------------------
+-----------------------------------------
+2025-06-06 17:15:17 - Total Token Usage for Session
+Total Input Tokens = 57
+Total Output Tokens = 166
+Session Duration: 0h 1m 57s
+-----------------------------------------
+-----------------------------------------
+2025-06-09 12:21:44 - Total Token Usage for Session
+Total Input Tokens = 46
+Total Output Tokens = 176
+Session Duration: 0h 1m 1s
+-----------------------------------------
