@@ -1,50 +1,31 @@
 #!/bin/bash
-#set -x
+if [ -f .env ]; then
+    export $(grep -v '^#' .env | xargs)
+fi
 
-# Setting some required variables
 BITO_CMD=`which bito`
 BITO_CMD_VEP=""
 BITO_VERSION=`$BITO_CMD -v | awk '{print $NF}'`
-# Compare BITO_VERSION to check if its greater than 3.7
 if awk "BEGIN {exit !($BITO_VERSION > 3.7)}"; then
        BITO_CMD_VEP="--agent create_overview_doc"
 fi
 
-# Log file for storing the token usage information
-log_file="bito_usage_log.txt" 
-
-# Directory containing prompt files for NLP tasks
-prompt_folder="AI_Prompts"  
-
-# Global variables for session token counts
+log_file="bito_usage_log.txt"
+prompt_folder="AI_Prompts"
 total_input_token_count=0
 total_output_token_count=0
-
-# CSV file with programming language extensions
 lang_csv="programming_languages.csv"
-
-# File containing skip list
 skip_list_csv="skip_list.csv"
-
-# Archivo temporal para progreso
 progress_log=$(mktemp)
 progress_lock="${progress_log}.lock"
 trap 'rm -f "$progress_log" "$progress_lock"' EXIT
 
-# Function to check if the response from bito is valid
 function bito_response_ok() {
     local ret_code=$1
     local response=$2
-
-    if [[ $ret_code -ne 0 ]]; then
-        return 1
-    fi
-    if [[ $response == Whoops* ]]; then
-        return 1
-    fi
-    if [[ -z $response ]]; then
-        return 1
-    fi
+    if [[ $ret_code -ne 0 ]]; then return 1; fi
+    if [[ $response == Whoops* ]]; then return 1; fi
+    if [[ -z $response ]]; then return 1; fi
     return 0
 }
 
@@ -67,10 +48,8 @@ function log_token_usage_and_session_duration() {
 
 function check_tools_and_files() {
     echo "Checking required tools and files for documentation generation..." >&2
-
     local required_tools=("bito" "mmdc")
     local required_files=("high_level_doc_prompt.txt" "mermaid_doc_prompt.txt" "system_introduction_prompt.txt" "system_overview_mermaid_update_prompt.txt" "fix_mermaid_syntax_prompt.txt")
-
     for tool in "${required_tools[@]}"; do
         if ! command -v "$tool" &> /dev/null; then
             echo -e "\nError: Tool $tool is required but not found."
@@ -89,14 +68,12 @@ function check_tools_and_files() {
             exit 1
         fi
     done
-
     for file in "${required_files[@]}"; do
         if [ ! -f "$prompt_folder/$file" ]; then
             echo -e "\nError: Missing required file: $prompt_folder/$file"
             exit 1
         fi
     done
-
     echo -e "All required tools and files are present. Proceeding...\n" >&2
 }
 
@@ -136,7 +113,7 @@ function call_bito_with_retry() {
     local filename=$(basename "$prompt_file_path")
     while [ $attempt -le $MAX_RETRIES ]; do
         echo "Calling bito with retry logic. Attempt $attempt of $MAX_RETRIES with prompt file '$filename'..." >&2
-        output=$(echo -e "$input_text" | bito $BITO_CMD_VEP -k "eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjoidjFfMjU4NzlfOTM4ODk5XzUxNjg4NV9XZWQgQXByIDIzIDA1OjU0OjI0IFVUQyAyMDI1In0.hYe6J9Y2Hhqt27mDD1KDPWLVd999DunaZBViZPXH21U" -p "$prompt_file_path")
+        output=$(echo -e "$input_text" | bito $BITO_CMD_VEP -k "$BITO_API_KEY" -p "$prompt_file_path")
         local ret_code=$?
         if ! bito_response_ok "$ret_code" "$output"; then
             echo "Attempt $attempt: bito call for file '$filename' completed but returned insufficient content. Retrying in $RETRY_DELAY seconds..." >&2
@@ -156,6 +133,7 @@ function call_bito_with_retry() {
 function create_module_documentation() {
     local path_to_module="$1"
     local documentation_directory="$2"
+    local metricas_log="$3"
     echo "Creating documentation for module: $path_to_module" >&2
 
     if is_skippable "$path_to_module"; then
@@ -194,6 +172,10 @@ function create_module_documentation() {
     fi 
 
     echo -e "Documentation saved to $markdown_documentation_file\n\n"
+
+    # Guardar métricas por archivo (ejemplo)
+    local char_count=$(wc -m < "$path_to_module")
+    echo "Archivo: $name_of_module | Caracteres: $char_count" >> "$metricas_log"
 }
 
 function extract_module_names_and_associated_objectives_then_call_bito() {
@@ -430,11 +412,6 @@ function create_find_command() {
     echo "$find_command"
 }
 
-# Archivo temporal para log de progreso y tiempo
-#progress_time_log="$docs_folder/progreso_documentacion.log"
-
-
-# Función para actualizar el log de progreso y tiempo, con más información por archivo
 function update_progress_time_log() {
     local processed=$1
     local total=$2
@@ -443,22 +420,17 @@ function update_progress_time_log() {
     local char_count="${5:-N/A}"
     local file_time="${6:-N/A}"
 
-    # Tiempos de inicio y fin por archivo
     local file_end_time=$(date +%s)
     local file_start_time=$((file_end_time - file_time))
     local file_start_fmt=$(date -d "@$file_start_time" '+%d/%m/%Y:%H:%M:%S')
     local file_end_fmt=$(date -d "@$file_end_time" '+%d/%m/%Y:%H:%M:%S')
-
-    # Tiempo total fin
     local total_end_fmt=$(date '+%d/%m/%Y:%H:%M:%S')
 
     echo "Archivo: $file_name | Caracteres: $char_count | Tiempo inicio archivo: $file_start_fmt | Tiempo fin archivo: $file_end_fmt | Tiempo total fin: $total_end_fmt" >> "$progress_time_log"
 }
 
-# MAX_JOBS: Número de procesos paralelos permitidos
 MAX_JOBS=5
 
-# Función para crear documentación de módulos en paralelo (ajustada para esperar a que terminen todos los procesos)
 function parallel_create_module_documentation() {
     local files=("$@")
     local total_files=${#files[@]}
@@ -467,7 +439,7 @@ function parallel_create_module_documentation() {
     for module_file in "${files[@]}"; do
         (
             local file_start_time=$(date +%s)
-            create_module_documentation "$module_file" "$docs_folder"
+            create_module_documentation "$module_file" "$docs_folder" "$metricas_log"
             local file_end_time=$(date +%s)
             local file_time=$((file_end_time - file_start_time))
             local file_name=$(basename "$module_file")
@@ -479,49 +451,47 @@ function parallel_create_module_documentation() {
                 update_progress_time_log "$processed_now" "$total_files" "$start_time" "$file_name" "$char_count" "$file_time"
             ) 200>"$progress_lock"
         ) &
-        # Controla el número máximo de procesos en paralelo
         while [[ $(jobs -rp | wc -l) -ge $MAX_JOBS ]]; do
             sleep 0.5
         done
     done
-
-    # Espera a que TODOS los procesos en paralelo terminen antes de continuar
     wait
-
     echo "Log de progreso y tiempo guardado en: $progress_time_log"
 }
 
-# Capture Start Time
 start_time=$(date +%s)
+
 function main() {
-    # Check if required tools and files are available
     check_tools_and_files
     if [ $# -eq 0 ]; then
         echo "Please provide a folder name as a command line argument"
         exit 1
     fi
     folder_to_document="$1"
-    docs_folder="doc_"$(basename "$folder_to_document")
-    if [ ! -d "$folder_to_document" ]; then
-        echo "Folder $folder_to_document does not exist"
-        exit 1
-    fi
-    if [ ! -d "$docs_folder" ]; then
-        mkdir "$docs_folder"
-    fi
+    docs_folder="doc_$(basename "$folder_to_document")"
 
-    # Asigna la ruta del log después de crear la carpeta
-    progress_time_log="$docs_folder/progreso_documentacion.log"
+    # Carpeta de logs generales en la raíz
+    logs_folder="logs"
+    mkdir -p "$logs_folder"
+    progress_time_log="$logs_folder/progreso_documentacion.log"
     export progress_time_log
+
+    # Carpeta de métricas en la raíz (NO se crea aquí, tú la creas afuera)
+    metricas_folder="logs_metricas"
+    # mkdir -p "$metricas_folder"  # No se genera aquí, solo se referencia
+
+    nombre_proyecto="$(basename "$folder_to_document")"
+    metricas_log="$metricas_folder/id_${nombre_proyecto}_metricas.log"
+    export metricas_log
+
+    mkdir -p "$docs_folder"
 
     echo "Generating documentation in $docs_folder"
     echo "Documentation will be saved in $docs_folder" >&2
     echo "Progress and time log will be saved in $progress_time_log" >&2
+    echo "Metricas per project will be saved in $metricas_log" >&2
 
-    # Inicializa el archivo de progreso
     echo "0" > "$progress_log"
-
-    # Inicializa el archivo de log de tiempo
     > "$progress_time_log"
 
     read_skip_list
@@ -531,7 +501,7 @@ function main() {
     readarray -t module_files <<<"$module_files_list"
     [ ${#module_files[@]} -eq 0 ] && echo "Warning: No files found for documentation generation." && return
     parallel_create_module_documentation "${module_files[@]}"
-    echo "# Module Overview" > "$aggregated_md_file" 
+    echo "# Module Overview" > "$aggregated_md_file"
     for md_file in "$docs_folder"/*_Doc.md; do
         if [ "$md_file" != "$aggregated_md_file" ]; then
             cat "$md_file" >> "$aggregated_md_file"
