@@ -1,15 +1,1 @@
-doc_ecommercempadministrador/
-doc_AI-Automation/
-doc_..../
-Proyectos_Procesados/
-package-lock.json/
-package.json/
-node_modules/
-node_modules/
 .env
-package.json
-package-lock.json
-# Ignore all files in the root directory
-# except for the .gitignore file
-# Ignore all files in the root directory
-# except for the .gitignore file   
