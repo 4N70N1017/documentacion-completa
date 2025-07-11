@@ -2,16 +2,6 @@
 if [ -f .env ]; then
     export $(grep -v '^#' .env | xargs)
 fi
-#set -x
-
-# Setting some required variables
-BITO_CMD=`which bito`
-BITO_CMD_VEP=""
-BITO_VERSION=`$BITO_CMD -v | awk '{print $NF}'`
-# Compare BITO_VERSION to check if its greater than 3.7
-if awk "BEGIN {exit !($BITO_VERSION > 3.7)}"; then
-       BITO_CMD_VEP="--agent create_overview_doc"
-fi
 
 # Log file for storing the token usage information
 log_file="bito_usage_log.txt" 
@@ -66,41 +56,6 @@ function log_token_usage_and_session_duration() {
     echo "Total Output Tokens = $total_output_token_count" | tee -a "$log_file"
     echo "Session Duration: $((duration / 3600))h $(((duration % 3600) / 60))m $((duration % 60))s" | tee -a "$log_file"
     echo "-----------------------------------------" | tee -a "$log_file"
-}
-
-function check_tools_and_files() {
-    echo "Checking required tools and files for documentation generation..." >&2
-
-    local required_tools=("bito" "mmdc")
-    local required_files=("high_level_doc_prompt.txt" "mermaid_doc_prompt.txt" "system_introduction_prompt.txt" "system_overview_mermaid_update_prompt.txt" "fix_mermaid_syntax_prompt.txt")
-
-    for tool in "${required_tools[@]}"; do
-        if ! command -v "$tool" &> /dev/null; then
-            echo -e "\nError: Tool $tool is required but not found."
-            case "$tool" in
-                "bito")
-                    echo "   Install Bito CLI on MAC and Linux with:"
-                    echo "   sudo curl https://alpha.bito.ai/downloads/cli/install.sh -fsSL | bash"
-                    echo "   On Archlinux, install with yay or paru: yay -S bito-cli or paru -S bito-cli"
-                    echo "   For Windows, download and install the MSI from Bito's website."
-                    echo "   Follow the instructions provided by the installer."
-                    ;;
-                "mmdc")
-                    echo "   Install Mermaid CLI with npm: npm install -g @mermaid-js/mermaid-cli"
-                    ;;
-            esac
-            exit 1
-        fi
-    done
-
-    for file in "${required_files[@]}"; do
-        if [ ! -f "$prompt_folder/$file" ]; then
-            echo -e "\nError: Missing required file: $prompt_folder/$file"
-            exit 1
-        fi
-    done
-
-    echo -e "All required tools and files are present. Proceeding...\n" >&2
 }
 
 function read_skip_list() {
@@ -244,7 +199,8 @@ function extract_module_names_and_associated_objectives_then_call_bito() {
 
     while [ $attempt -le $MAX_RETRIES ]; do
         echo "Attempt $attempt: Running bito for module: $current_module" >&2
-        bito_output=$(echo -e "$combined_output" | bito $BITO_CMD_VEP -p "$prompt_file_path")
+        #bito_output=$(echo -e "$combined_output" | bito $BITO_CMD_VEP -p "$prompt_file_path")
+        bito_output=$(echo -e "$combined_output" | bito $BITO_CMD_VEP -k "$BITO_API_KEY" -p "$prompt_file_path")
         local ret_code=$?
         if ! bito_response_ok "$ret_code" "$bito_output"; then
             echo "Attempt $attempt: bito command for module: $current_module failed or did not return enough content. Retrying in $RETRY_DELAY seconds..." >&2
@@ -273,7 +229,7 @@ function fix_mermaid_syntax() {
 
 function fix_mermaid_syntax_with_bito() {
     local fixed_mermaid_content
-    fixed_mermaid_content=$(echo "$mermaid_content" | bito $BITO_CMD_VEP -p "$prompt_folder/mermaid_doc_prompt.txt" | awk '/^```mermaid$/,/^```$/{if (!/^```mermaid$/ && !/^```$/) print}')
+    fixed_mermaid_content=$(echo "$mermaid_content" | bito $BITO_CMD_VEP -k "$BITO_API_KEY" -p "$prompt_folder/mermaid_doc_prompt.txt" | awk '/^```mermaid$/,/^```$/{if (!/^```mermaid$/ && !/^```$/) print}')
     local ret_code=$?
     if ! bito_response_ok "$ret_code" "$fixed_mermaid_content"; then
         echo "Error in bito response for fixing mermaid syntax with bito."
@@ -497,8 +453,7 @@ function parallel_create_module_documentation() {
 # Capture Start Time
 start_time=$(date +%s)
 function main() {
-    # Check if required tools and files are available
-    check_tools_and_files
+
     if [ $# -eq 0 ]; then
         echo "Please provide a folder name as a command line argument"
         exit 1
