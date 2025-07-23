@@ -1,16 +1,32 @@
 #!/bin/bash
+
+# Carpeta de logs
+LOGDIR="Logs"
+[ ! -d "$LOGDIR" ] && mkdir "$LOGDIR"
+
+# Validar argumento y definir nombre de proyecto
+if [ $# -eq 0 ]; then
+    echo "Please provide a folder name as a command line argument"
+    exit 1
+fi
+folder_to_document="$1"
+nombre_proyecto="$(basename "$folder_to_document")"
+
+# Forzar el log a llamarse como el proyecto y guardarse en Logs/
+LOGFILE="${LOGDIR}/${nombre_proyecto}.log"
+exec > "$LOGFILE" 2>&1
+
 if [ -f .env ]; then
     export $(grep -v '^#' .env | xargs)
 fi
 
-BITO_CMD=`which bito`
+BITO_CMD=$(which bito)
 BITO_CMD_VEP=""
-BITO_VERSION=`$BITO_CMD -v | awk '{print $NF}'`
+BITO_VERSION=$($BITO_CMD -v | awk '{print $NF}')
 if awk "BEGIN {exit !($BITO_VERSION > 3.7)}"; then
-       BITO_CMD_VEP="--agent create_overview_doc"
+    BITO_CMD_VEP="--agent create_overview_doc"
 fi
 
-log_file="bito_usage_log.txt"
 prompt_folder="AI_Prompts"
 total_input_token_count=0
 total_output_token_count=0
@@ -53,18 +69,6 @@ function check_tools_and_files() {
     for tool in "${required_tools[@]}"; do
         if ! command -v "$tool" &> /dev/null; then
             echo -e "\nError: Tool $tool is required but not found."
-            case "$tool" in
-                "bito")
-                    echo "   Install Bito CLI on MAC and Linux with:"
-                    echo "   sudo curl https://alpha.bito.ai/downloads/cli/install.sh -fsSL | bash"
-                    echo "   On Archlinux, install with yay or paru: yay -S bito-cli or paru -S bito-cli"
-                    echo "   For Windows, download and install the MSI from Bito's website."
-                    echo "   Follow the instructions provided by the installer."
-                    ;;
-                "mmdc")
-                    echo "   Install Mermaid CLI with npm: npm install -g @mermaid-js/mermaid-cli"
-                    ;;
-            esac
             exit 1
         fi
     done
@@ -90,17 +94,17 @@ function read_skip_list() {
 }
 
 function is_skippable() {
-  local path=$1
-  local skip_dirs_files=("logs" "node_modules" "dist" "target" "bin" "package-lock.json" "data.json" "build" ".gradle" ".idea" "gradle" "extension.js" "vendor.js" "ngsw.json" "polyfills.js" "init" ".gv")
-  for skip_item in "${skip_dirs_files[@]}"; do
-    if [[ "$path" == *"$skip_item"* ]]; then
-      return 0
+    local path=$1
+    local skip_dirs_files=("logs" "node_modules" "dist" "target" "bin" "package-lock.json" "data.json" "build" ".gradle" ".idea" "gradle" "extension.js" "vendor.js" "ngsw.json" "polyfills.js" "init" ".gv")
+    for skip_item in "${skip_dirs_files[@]}"; do
+        if [[ "$path" == *"$skip_item"* ]]; then
+            return 0
+        fi
+    done
+    if [[ $(basename "$path") == .* ]]; then
+        return 0
     fi
-  done
-  if [[ $(basename "$path") == .* ]]; then
-    return 0
-  fi
-  return 1
+    return 1
 }
 
 function call_bito_with_retry() {
@@ -133,14 +137,13 @@ function call_bito_with_retry() {
 function create_module_documentation() {
     local path_to_module="$1"
     local documentation_directory="$2"
-    local metricas_log="$3"
     echo "Creating documentation for module: $path_to_module" >&2
 
     if is_skippable "$path_to_module"; then
         echo "Skipped $path_to_module as it's on the exclusion list."
         return
     fi
-    
+
     local name_of_module=$(basename "$path_to_module")
     local content_of_module=$(<"$path_to_module")
 
@@ -167,15 +170,11 @@ function create_module_documentation() {
 
     local markdown_documentation_file="$documentation_directory/${name_of_module}_Doc.md"
     echo -e "## Module: $name_of_module\n$high_level_documentation" >> "$markdown_documentation_file"
-    if [[ -n "$mermaid_diagram" && "$mermaid_diagram" =~ [^[:space:]] ]]; then 
+    if [[ -n "$mermaid_diagram" && "$mermaid_diagram" =~ [^[:space:]] ]]; then
         echo -e "## Flow Diagram [via mermaid]\n\`\`\`mermaid\n$mermaid_diagram\n\`\`\`" >> "$markdown_documentation_file"
-    fi 
+    fi
 
     echo -e "Documentation saved to $markdown_documentation_file\n\n"
-
-    # Guardar métricas por archivo (ejemplo)
-    local char_count=$(wc -m < "$path_to_module")
-    echo "Archivo: $name_of_module | Caracteres: $char_count" >> "$metricas_log"
 }
 
 function extract_module_names_and_associated_objectives_then_call_bito() {
@@ -435,11 +434,10 @@ function parallel_create_module_documentation() {
     local files=("$@")
     local total_files=${#files[@]}
     local start_time=$(date +%s)
-
     for module_file in "${files[@]}"; do
         (
             local file_start_time=$(date +%s)
-            create_module_documentation "$module_file" "$docs_folder" "$metricas_log"
+            create_module_documentation "$module_file" "$docs_folder"
             local file_end_time=$(date +%s)
             local file_time=$((file_end_time - file_start_time))
             local file_name=$(basename "$module_file")
@@ -463,33 +461,17 @@ start_time=$(date +%s)
 
 function main() {
     check_tools_and_files
-    if [ $# -eq 0 ]; then
-        echo "Please provide a folder name as a command line argument"
-        exit 1
-    fi
-    folder_to_document="$1"
-    docs_folder="doc_$(basename "$folder_to_document")"
+    docs_folder="doc_${nombre_proyecto}"
+    [ ! -d "$docs_folder" ] && mkdir "$docs_folder"
 
-    # Carpeta de logs generales en la raíz
-    logs_folder="logs"
-    mkdir -p "$logs_folder"
-    progress_time_log="$logs_folder/progreso_documentacion.log"
+    progress_time_log="Logs/${nombre_proyecto}_metricas.log"
     export progress_time_log
-
-    # Carpeta de métricas en la raíz (NO se crea aquí, tú la creas afuera)
-    metricas_folder="logs_metricas"
-    # mkdir -p "$metricas_folder"  # No se genera aquí, solo se referencia
-
-    nombre_proyecto="$(basename "$folder_to_document")"
-    metricas_log="$metricas_folder/id_${nombre_proyecto}_metricas.log"
-    export metricas_log
-
-    mkdir -p "$docs_folder"
+    log_file="Logs/bito_usage_log.txt"
 
     echo "Generating documentation in $docs_folder"
     echo "Documentation will be saved in $docs_folder" >&2
-    echo "Progress and time log will be saved in $progress_time_log" >&2
-    echo "Metricas per project will be saved in $metricas_log" >&2
+    echo "Progress log (metricas) will be saved in $progress_time_log" >&2
+    echo "Bito token usage log will be saved in $log_file" >&2
 
     echo "0" > "$progress_log"
     > "$progress_time_log"
@@ -516,7 +498,7 @@ function main() {
     if [ -f "$docs_folder/overview.mdd" ]; then
         echo -e "\n# Full System Overview\n" >> "$aggregated_md_file"
         awk '/^```mermaid$/,/^```$/' "$docs_folder/overview.mdd" >> "$aggregated_md_file"
-    else
+    else+------------------
         echo "Overview file not found or empty."
     fi
     cat "$temp_file" >> "$aggregated_md_file"
